@@ -13,8 +13,8 @@ if ($user->role != "Administrateur") {
 
 $request = $connexion->query("  SELECT   u.email, u.firstname, u.lastname, date_debut, date_fin, accepte, m.nom, m.numero_de_serie
                                 FROM reservation AS r
-                                JOIN user AS u  ON r.id_validateur = u.id
-                                JOIN materiel AS m ON r.id_materiel = m.id");
+                                LEFT JOIN user AS u  ON r.id_loueur = u.id
+                                LEFT JOIN materiel AS m ON r.id_materiel = m.id");
 
 $reservationList = $request->fetchAll();
 
