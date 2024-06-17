@@ -17,20 +17,27 @@ if (!isset($_GET['id'])) {
     exit;
 }
 
-$idMateriel = $_GET["id"];
+$idReservation = $_GET["id"];
 
-$requete = $connexion->prepare("SELECT m.nom, m.id, m.numero_de_serie, r.date_debut, r.date_fin, r.id_loueur
-                                FROM materiel AS m
-                                JOIN reservation AS r ON m.id = r.id_materiel
-                                WHERE m.id = ?");
-$requete->execute([$idMateriel]);
+$requete = $connexion->prepare("SELECT u.email, u.firstname, u.lastname, date_debut, date_fin, accepte, m.nom, m.numero_de_serie
+                                FROM reservation AS r
+                                LEFT JOIN user AS u  ON r.id_loueur = u.id
+                                LEFT JOIN materiel AS m ON r.id_materiel = m.id
+                                WHERE r.id = ?");
 
-$materiel = $requete->fetch();
+$requete->execute([$idReservation]);
 
-if (!$materiel) {
+$reservation = $requete->fetch();
+
+if (!$reservation) {
     echo json_encode(["message" => "utilisateur inexistant"]);
     http_response_code(404);
     exit;
 }
 
-echo json_encode($materiel);
+// Formatage des dates et du booléen
+$reservation['date_debut'] = date('c', strtotime($reservation['date_debut']));
+$reservation['date_fin'] = date('c', strtotime($reservation['date_fin']));
+$reservation['accepte'] = $reservation['accepte'] == 1;
+
+echo json_encode($reservation);

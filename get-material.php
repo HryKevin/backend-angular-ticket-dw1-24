@@ -19,7 +19,7 @@ if (!isset($_GET['id'])) {
 
 $idMateriel = $_GET["id"];
 
-$requete = $connexion->prepare("SELECT m.nom, m.id, m.numero_de_serie, r.date_debut, r.date_fin, r.id_loueur
+$requete = $connexion->prepare("SELECT m.nom, m.id, m.date_achat, m.numero_de_serie, r.date_debut, r.date_fin, r.id_loueur
                                 FROM materiel AS m
                                 JOIN reservation AS r ON m.id = r.id_materiel
                                 WHERE m.id = ?");
@@ -32,5 +32,9 @@ if (!$materiel) {
     http_response_code(404);
     exit;
 }
+
+
+// Formatage des dates et du booléen
+$materiel['date_achat'] = date('c', strtotime($materiel['date_achat']));
 
 echo json_encode($materiel);

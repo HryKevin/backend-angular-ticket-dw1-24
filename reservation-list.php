@@ -11,7 +11,7 @@ if ($user->role != "Administrateur") {
     exit();
 }
 
-$request = $connexion->query("  SELECT   u.email, u.firstname, u.lastname, date_debut, date_fin, accepte, m.nom, m.numero_de_serie
+$request = $connexion->query("  SELECT   u.email, u.firstname, u.lastname, date_debut, date_fin, accepte, m.nom, m.numero_de_serie, r.id
                                 FROM reservation AS r
                                 LEFT JOIN user AS u  ON r.id_loueur = u.id
                                 LEFT JOIN materiel AS m ON r.id_materiel = m.id");
