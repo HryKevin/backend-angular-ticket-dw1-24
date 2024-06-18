@@ -18,4 +18,17 @@ $request = $connexion->query("  SELECT   u.email, u.firstname, u.lastname, date_
 
 $reservationList = $request->fetchAll();
 
+
+foreach ($reservationList as &$reservation) {
+    // Formatage des dates
+    $date_debut = new DateTime($reservation['date_debut']);
+    $reservation['date_debut'] = $date_debut->format('d-m-Y');
+
+    $date_fin = new DateTime($reservation['date_fin']);
+    $reservation['date_fin'] = $date_fin->format('d-m-Y');
+
+    // Convertir accepte en booléen
+    $reservation['accepte'] = $reservation['accepte'] == 1 ? 'Oui' : 'Non';
+}
+
 echo json_encode($reservationList);

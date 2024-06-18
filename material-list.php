@@ -28,6 +28,14 @@ LEFT JOIN (
     ");
 
     $materialList = $request->fetchAll();
+
+    foreach ($materialList as &$material) {
+        // Formatage de la date d'achat
+        if (isset($material['date_achat'])) {
+            $date_achat = new DateTime($material['date_achat']);
+            $material['date_achat'] = $date_achat->format('d-m-Y');
+        }
+    }
     echo json_encode($materialList);
 } catch (Exception $e) {
     http_response_code(500);
