@@ -36,8 +36,13 @@ if (!$reservation) {
 }
 
 // Formatage des dates et du booléen
-$reservation['date_debut'] = date('c', strtotime($reservation['date_debut']));
-$reservation['date_fin'] = date('c', strtotime($reservation['date_fin']));
+// Formatage des dates
+$date_debut = new DateTime($reservation['date_debut']);
+$reservation['date_debut'] = $date_debut->format('d-m-Y');
+
+$date_fin = new DateTime($reservation['date_fin']);
+$reservation['date_fin'] = $date_fin->format('d-m-Y');
+
 $reservation['accepte'] = $reservation['accepte'] == 1;
 
 echo json_encode($reservation);

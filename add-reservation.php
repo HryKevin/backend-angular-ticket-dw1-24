@@ -50,14 +50,15 @@ if ($existingMateriel) {
     } else {
         // Ajouter la nouvelle réservation
         $request = $connexion->prepare("
-            INSERT INTO reservation (id_materiel, date_debut, date_fin, id_loueur)
-            VALUES (:id_materiel, :debutReservation, :finReservation, :id_loueur)
+            INSERT INTO reservation (id_materiel, date_debut, date_fin, id_loueur, date_demande)
+            VALUES (:id_materiel, :debutReservation, :finReservation, :id_loueur, :date_demande)
         ");
         $request->execute([
             'id_materiel' => $_GET['id'],
             'debutReservation' => $debutReservation->format('Y-m-d H:i:s'),
             'finReservation' => $finReservation->format('Y-m-d H:i:s'),
             'id_loueur' => $user->id,
+            'date_demande' => date('Y-m-d H:i:s'),
         ]);
 
         echo '{"message" : "Votre demande de réservation sera traité dans les plus bref délais"}';

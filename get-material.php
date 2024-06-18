@@ -21,14 +21,14 @@ $idMateriel = $_GET["id"];
 
 $requete = $connexion->prepare("SELECT m.nom, m.id, m.date_achat, m.numero_de_serie, r.date_debut, r.date_fin, r.id_loueur
                                 FROM materiel AS m
-                                JOIN reservation AS r ON m.id = r.id_materiel
+                                LEFT JOIN reservation AS r ON m.id = r.id_materiel
                                 WHERE m.id = ?");
 $requete->execute([$idMateriel]);
 
 $materiel = $requete->fetch();
 
 if (!$materiel) {
-    echo json_encode(["message" => "utilisateur inexistant"]);
+    echo json_encode(["message" => "Matériel inexistant"]);
     http_response_code(404);
     exit;
 }
